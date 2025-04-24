@@ -1,20 +1,15 @@
+package com.yandex.app;
+
+import com.yandex.app.model.Epic;
+import com.yandex.app.model.Status;
+import com.yandex.app.model.Subtask;
+import com.yandex.app.service.Task;
+import com.yandex.app.service.TaskManager;
+
 public class Main {
 
     public static void main(String[] args) {
         TaskManager taskManager = new TaskManager();
-
-        Task washCar = new Task("Помыть машину", "С использованием воска");
-        Task washFloorCreated = taskManager.addTask(washCar);
-        System.out.println(washFloorCreated);
-
-        System.out.println();
-
-        Task washCarToUpdate = new Task(washCar.getId(), "Почистить салон", "Использовать пылесос",
-                Status.IN_PROGRESS);
-        Task washFloorUpdated = taskManager.updateTask(washCarToUpdate);
-        System.out.println(washFloorUpdated);
-
-        System.out.println();
 
         Epic test = new Epic("Проверить что-то еще", "какое-то описание");
         taskManager.addEpic(test);

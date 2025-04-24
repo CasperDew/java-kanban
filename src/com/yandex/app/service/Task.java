@@ -1,3 +1,7 @@
+package com.yandex.app.service;
+
+import com.yandex.app.model.Status;
+
 import java.util.Objects;
 
 public class Task {
@@ -12,11 +16,11 @@ public class Task {
         this.status = Status.NEW;
     }
 
-    public Task(int id, String name, String description, Status status) {
+    public Task(int id, String name, String description) {
         this.name = name;
         this.description = description;
         this.id = id;
-        this.status = status;
+        this.status = Status.NEW;
     }
 
     public String getName() {
@@ -75,7 +79,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "com.yandex.app.model.Task{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", id=" + id +

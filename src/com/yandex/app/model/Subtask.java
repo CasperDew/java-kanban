@@ -1,13 +1,12 @@
+package com.yandex.app.model;
+
+import com.yandex.app.service.Task;
+
 public class Subtask extends Task {
     private final int epicID;
 
     public Subtask(String name, String description, int epicID) {
         super(name, description);
-        this.epicID = epicID;
-    }
-
-    public Subtask(String name, String description, int id, Status status, int epicID) {
-        super(id, name, description, status);
         this.epicID = epicID;
     }
 
@@ -17,7 +16,7 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        return "Subtask{" +
+        return "com.yandex.app.model.Subtask{" +
                 "name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", id=" + getId() +

@@ -1,14 +1,14 @@
+package com.yandex.app.model;
+
+import com.yandex.app.service.Task;
+
 import java.util.ArrayList;
 
-public class Epic extends Task{
+public class Epic extends Task {
     private ArrayList<Subtask> subtaskList = new ArrayList<>();
 
     public Epic(String name, String description) {
         super(name, description);
-    }
-
-    public Epic(String name, String description, int id, Status status) {
-        super(id, name, description, status);
     }
 
     public void addSubtask(Subtask subtask) {
@@ -20,7 +20,7 @@ public class Epic extends Task{
     }
 
     public ArrayList<Subtask> getSubtaskList() {
-        return subtaskList;
+        return new ArrayList<>(subtaskList);
     }
 
     public void setSubtaskList(ArrayList<Subtask> subtaskList) {
@@ -29,7 +29,7 @@ public class Epic extends Task{
 
     @Override
     public String toString() {
-        return "Epic{" +
+        return "com.yandex.app.model.Epic{" +
                 "name= " + getName() + '\'' +
                 ", description = " + getDescription() + '\'' +
                 ", id=" + getId() +

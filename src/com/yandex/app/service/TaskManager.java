@@ -1,5 +1,12 @@
+package com.yandex.app.service;
+
+import com.yandex.app.model.Epic;
+import com.yandex.app.model.Status;
+import com.yandex.app.model.Subtask;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TaskManager {
@@ -10,7 +17,7 @@ public class TaskManager {
     private int nextID = 1;
 
     public int getNextID() {
-        return nextID;
+        return nextID++;
     }
 
     public Task addTask(Task task) {
@@ -36,8 +43,9 @@ public class TaskManager {
 
     public Task updateTask(Task task) {
         Integer taskID = task.getId();
-        if(taskID == null || !taskMap.containsKey(taskID))
+        if(taskID == null || !taskMap.containsKey(taskID)) {
             return null;
+        }
 
         taskMap.replace(taskID, task);
         return task;
@@ -45,8 +53,9 @@ public class TaskManager {
 
     public Epic updateEpic(Epic epic) {
         Integer epicId = epic.getId();
-        if(epicId == null || !epicMap.containsKey(epicId))
+        if(epicId == null || !epicMap.containsKey(epicId)) {
             return null;
+        }
 
         Epic oldEpic = epicMap.get(epicId);
         ArrayList<Subtask> oldEpicSubtaskList = oldEpic.getSubtaskList();
@@ -70,8 +79,9 @@ public class TaskManager {
 
     public Subtask updateSubtask(Subtask subtask) {
         Integer subtaskID = subtask.getEpicID();
-        if(subtaskID == null || !subtaskMap.containsKey(subtaskID))
+        if(subtaskID == null || !subtaskMap.containsKey(subtaskID)) {
             return null;
+        }
 
         int epicID = subtask.getEpicID();
         Subtask oldSubtask = subtaskMap.get(subtaskID);
@@ -87,6 +97,7 @@ public class TaskManager {
         return subtask;
     }
 
+    // методы получения по id
     public Task getTaskByID(int id) {
         return taskMap.get(id);
     }
@@ -97,6 +108,18 @@ public class TaskManager {
 
     public Subtask getSubtaskByID(int id) {
         return subtaskMap.get(id);
+    }
+
+    //получение подзадачи Эпик метода по id эпика
+    public List<Subtask> getEpicSubtaskByID(int epicID) {
+
+        List<Subtask> subtaskEpic = new ArrayList<>();
+        for(Subtask subtask : subtaskMap.values()) {
+            if(subtask.getEpicID() == epicID) {
+                subtaskEpic.add(subtask);
+            }
+        }
+        return subtaskEpic;
     }
 
     public ArrayList<Task> getTasks() {
@@ -111,12 +134,17 @@ public class TaskManager {
         return new ArrayList<>(subtaskMap.values());
     }
 
+    //очистка задач
     public void deleteTasks() {
         taskMap.clear();
     }
 
     public void deleteEpics() {
         epicMap.clear();
+        List<Subtask> subtasks = getSubtasks();
+        if(subtasks != null) {
+            deleteSubtasks();
+        }
     }
 
     public void deleteSubtasks() {
@@ -128,28 +156,35 @@ public class TaskManager {
     }
 
     public void deleteTaskByID(int id) {
-        taskMap.remove(id);
+        Task task = taskMap.get(id);
+        if(task != null) {
+            taskMap.remove(id);
+        }
     }
 
     public void deleteEpicById(int id) {
         ArrayList<Subtask> epicSubtask = epicMap.get(id).getSubtaskList();
-        epicMap.remove(id);
+        if(epicSubtask != null){
+            epicMap.remove(id);
 
-        for (Subtask subtask : epicSubtask) {
-            subtaskMap.remove(subtask.getId());
+            for (Subtask subtask : epicSubtask) {
+                subtaskMap.remove(subtask.getId());
+            }
         }
     }
 
     public void deleteSubtaskByID(int id) {
         Subtask subtask = subtaskMap.get(id);
         int epicID = subtask.getEpicID();
-        subtaskMap.remove(id);
+        if(subtask != null) {
+            subtaskMap.remove(id);
 
-        Epic epic = epicMap.get(epicID);
-        ArrayList<Subtask> subtaskList = epic.getSubtaskList();
-        subtaskList.remove(subtask);
-        epic.setSubtaskList(subtaskList);
-        updateEpicStatus(epic);
+            Epic epic = epicMap.get(epicID);
+            ArrayList<Subtask> subtaskList = epic.getSubtaskList();
+            subtaskList.remove(subtask);
+            epic.setSubtaskList(subtaskList);
+            updateEpicStatus(epic);
+        }
     }
 
     private void updateEpicStatus(Epic epic) {
