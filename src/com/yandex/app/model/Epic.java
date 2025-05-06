@@ -1,7 +1,5 @@
 package com.yandex.app.model;
 
-import com.yandex.app.service.Task;
-
 import java.util.ArrayList;
 
 public class Epic extends Task {
@@ -9,6 +7,15 @@ public class Epic extends Task {
 
     public Epic(String name, String description) {
         super(name, description);
+    }
+
+    public Epic(String title, String description, Status status) {
+        super(title, description, status);
+
+    }
+    public Epic(int id, String title, String description, Status status) {
+        super(id, title, description, status);
+
     }
 
     public void addSubtask(Subtask subtask) {

@@ -1,25 +1,22 @@
 package com.yandex.app;
 
 import com.yandex.app.model.Epic;
-import com.yandex.app.model.Status;
-import com.yandex.app.model.Subtask;
-import com.yandex.app.service.Task;
-import com.yandex.app.service.TaskManager;
+import com.yandex.app.service.InMemoryTaskManager;
 
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager taskManager = new TaskManager();
+        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
 
         Epic test = new Epic("Проверить что-то еще", "какое-то описание");
-        taskManager.addEpic(test);
+        inMemoryTaskManager.addEpic(test);
         System.out.println(test);
-        Subtask testTask1 = new Subtask("Обновить подзадачу", "такая задача", test.getId());
-        taskManager.addSubtask(testTask1);
-        System.out.println(test);
-        testTask1.setStatus(Status.DONE);
-        taskManager.updateSubtask(testTask1);
-        System.out.println(testTask1);
 
+        Epic testTask1 = new Epic("Обновить подзадачу", "такая задача");
+
+        inMemoryTaskManager.updateEpic(testTask1);
+        System.out.println(inMemoryTaskManager.getEpics());
+
+        System.out.println(inMemoryTaskManager.getHistory());
     }
 }

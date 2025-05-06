@@ -1,6 +1,4 @@
-package com.yandex.app.service;
-
-import com.yandex.app.model.Status;
+package com.yandex.app.model;
 
 import java.util.Objects;
 
@@ -17,11 +15,25 @@ public class Task {
     }
 
     public Task(int id, String name, String description) {
+        this.id = id;
         this.name = name;
         this.description = description;
-        this.id = id;
         this.status = Status.NEW;
     }
+
+    public Task(String title, String description, Status status) {
+        this.name = title;
+        this.description = description;
+        this.status = status;
+    }
+
+    public Task(int id,String title, String description, Status status) {
+        this.id = id;
+        this.name = title;
+        this.description = description;
+        this.status = status;
+    }
+
 
     public String getName() {
         return name;
