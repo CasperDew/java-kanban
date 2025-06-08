@@ -27,7 +27,7 @@ public class Task {
         this.status = status;
     }
 
-    public Task(int id,String title, String description, Status status) {
+    public Task(int id, String title, String description, Status status) {
         this.id = id;
         this.name = title;
         this.description = description;
@@ -79,11 +79,11 @@ public class Task {
     @Override
     public int hashCode() {
         int hash = 17;
-        if(name != null){
+        if (name != null) {
             hash = hash + name.hashCode();
         }
         hash = hash * 31;
-        if(description != null){
+        if (description != null) {
             hash = hash + description.hashCode();
         }
         return hash;
