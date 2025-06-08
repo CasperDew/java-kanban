@@ -19,7 +19,7 @@ class InMemoryTaskManagerTest {
 
     @BeforeEach
     public void beforeEach() {
-        taskManager = Managers.getDefault();
+        taskManager = Managers.getDefault(Managers.getDefaultHistory());
     }
 
     //проверяем, что экземпляры класса Task равны друг другу, если равен их id
@@ -52,7 +52,7 @@ class InMemoryTaskManagerTest {
         Epic epic = new Epic("Тестовый эпик", "Описание эпика", Status.NEW);
         taskManager.addEpic(epic);
 
-        Subtask subtask = new Subtask("Подзадача","Описание подзадачи", epic.getId());
+        Subtask subtask = new Subtask("Подзадача", "Описание подзадачи", epic.getId());
         taskManager.addSubtask(subtask);
         Subtask saveSubtask = taskManager.getSubtaskByID(subtask.getId());
 
@@ -95,6 +95,7 @@ class InMemoryTaskManagerTest {
         assertEquals(epic.getName(), name, "Заголовок должен совпадать");
         assertEquals(epic.getDescription(), description, "Описание должено совпадать");
     }
+
     @Test
     public void checkingWhatEpicUpdatedCorrect() {
 
@@ -112,6 +113,7 @@ class InMemoryTaskManagerTest {
         assertEquals(epic1, taskManager.getEpicByID(epic.getId()), "Эпик не обновился!");
 
     }
+
     @Test
     public void updateTaskShouldReturnTaskWithTheSameId() {
         Task expected = new Task("имя", "описание");
@@ -135,7 +137,7 @@ class InMemoryTaskManagerTest {
         Subtask expected = new Subtask("имя", "описание", epic.getId());
         taskManager.addSubtask(expected);
 
-        Subtask updatedSubtask = new Subtask(expected.getId(),"новое имя", "новое описание",
+        Subtask updatedSubtask = new Subtask(expected.getId(), "новое имя", "новое описание",
                 Status.DONE, epic.getId());
 
         Subtask actual = taskManager.getSubtaskByID(updatedSubtask.getId());
