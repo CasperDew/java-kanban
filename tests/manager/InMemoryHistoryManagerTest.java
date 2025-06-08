@@ -1,17 +1,15 @@
 package manager;
 
-import com.yandex.app.model.Epic;
 import com.yandex.app.model.Status;
 import com.yandex.app.model.Task;
 import com.yandex.app.service.HistoryManager;
 import com.yandex.app.service.TaskManager;
 import com.yandex.app.utils.Managers;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class InMemoryHistoryManagerTest {
     @Test
