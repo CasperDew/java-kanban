@@ -4,12 +4,15 @@ import com.yandex.app.model.Epic;
 import com.yandex.app.model.Status;
 import com.yandex.app.model.Subtask;
 import com.yandex.app.model.Task;
+import com.yandex.app.service.HistoryManager;
 import com.yandex.app.service.TaskManager;
 import com.yandex.app.utils.Managers;
 
+import java.util.List;
+
 public class Main {
 
-    private static final TaskManager inMemoryTaskManager = Managers.getDefault();
+    private static final TaskManager inMemoryTaskManager = Managers.getDefault(Managers.getDefaultHistory());
 
     public static void main(String[] args) {
 
@@ -27,6 +30,14 @@ public class Main {
             System.out.println(task);
         }
 
+
+        HistoryManager historyManager = Managers.getDefaultHistory();
+        TaskManager manager = Managers.getDefault(historyManager);
+        manager.addTask(new Task("Задача 1", "Первая задача", Status.NEW));
+        historyManager.add(manager.getTaskByID(1));
+        manager.deleteTaskByID(1);
+        final List<Task> history = historyManager.getHistory();
+        System.out.println(history.size());
 
     }
 }
