@@ -169,4 +169,17 @@ class InMemoryTaskManagerTest {
 
     }
 
+    @Test
+    void checkHistoryManagerSavesTaskVersions() {
+        TaskManager manager = Managers.getDefault(Managers.getDefaultHistory());
+        Task checkTask = new Task("Задача 1", "Первая задача", Status.NEW);
+        manager.addTask(checkTask);
+        manager.getTaskByID(checkTask.getId());
+        Task checkTask2 = new Task(checkTask.getName(), checkTask.getDescription(), checkTask.getStatus());
+        checkTask2.setId(checkTask.getId());
+        manager.updateTask(checkTask2);
+        checkTask.setStatus(Status.DONE);
+        assertEquals(checkTask, manager.getHistory().getFirst());
+    }
+
 }

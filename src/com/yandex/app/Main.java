@@ -1,13 +1,9 @@
 package com.yandex.app;
 
 import com.yandex.app.model.Epic;
-import com.yandex.app.model.Status;
 import com.yandex.app.model.Task;
-import com.yandex.app.service.HistoryManager;
 import com.yandex.app.service.TaskManager;
 import com.yandex.app.utils.Managers;
-
-import java.util.List;
 
 public class Main {
 
@@ -29,14 +25,23 @@ public class Main {
             System.out.println(task);
         }
 
+        //проверка работы удалений
+        Epic newT = new Epic("2", "какое-то описание");
+        inMemoryTaskManager.addEpic(newT);
+        System.out.println(" ");
+        System.out.println(inMemoryTaskManager.getEpicByID(3));
 
-        HistoryManager historyManager = Managers.getDefaultHistory();
-        TaskManager manager = Managers.getDefault(historyManager);
-        manager.addTask(new Task("Задача 1", "Первая задача", Status.NEW));
-        historyManager.add(manager.getTaskByID(1));
-        manager.deleteTaskByID(1);
-        final List<Task> history = historyManager.getHistory();
-        System.out.println(history.size());
+        inMemoryTaskManager.deleteEpicById(3);
+        System.out.println(inMemoryTaskManager.getEpicByID(3));
+
+        System.out.println(" ");
+        Task newtask = new Task("Task", "new task");
+        inMemoryTaskManager.addTask(newtask);
+        System.out.println(inMemoryTaskManager.getTasks());
+        inMemoryTaskManager.deleteTasks();
+        System.out.println(inMemoryTaskManager.getTasks());
+        System.out.println(" ");
+
 
     }
 }
