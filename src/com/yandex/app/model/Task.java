@@ -3,15 +3,17 @@ package com.yandex.app.model;
 import java.util.Objects;
 
 public class Task {
+    private int id;
+    private Type type;
     private String name;
     private String description;
-    private int id;
     private Status status;
 
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
         this.status = Status.NEW;
+        this.type = Type.TASK;
     }
 
     public Task(int id, String name, String description) {
@@ -19,12 +21,14 @@ public class Task {
         this.name = name;
         this.description = description;
         this.status = Status.NEW;
+        this.type = Type.TASK;
     }
 
     public Task(String title, String description, Status status) {
         this.name = title;
         this.description = description;
         this.status = status;
+        this.type = Type.TASK;
     }
 
     public Task(int id, String title, String description, Status status) {
@@ -32,6 +36,7 @@ public class Task {
         this.name = title;
         this.description = description;
         this.status = status;
+        this.type = Type.TASK;
     }
 
 
@@ -67,6 +72,14 @@ public class Task {
         this.status = status;
     }
 
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -96,6 +109,7 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", id=" + id +
                 ", status=" + status +
+                ", type=" + type +
                 '}';
     }
 }

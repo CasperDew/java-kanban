@@ -15,11 +15,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest {
 
-    private static TaskManager taskManager;
+    private TaskManager taskManager;
 
     @BeforeEach
     public void beforeEach() {
-        taskManager = Managers.getDefault(Managers.getDefaultHistory());
+        taskManager = Managers.getDefault();
     }
 
     //проверяем, что экземпляры класса Task равны друг другу, если равен их id
@@ -63,7 +63,8 @@ class InMemoryTaskManagerTest {
     @Test
     public void addNewTask() {
         //проверяем, что InMemoryTaskManager добавляет задачи и может найти их по id;
-        final Task task = taskManager.addTask(new Task("Test addNewTask", "Test addNewTask description"));
+        final Task task = new Task("Test addNewTask", "Test addNewTask description");
+        taskManager.addTask(task);
         final Task savedTask = taskManager.getTaskByID(task.getId());
         assertNotNull(savedTask, "Задача не найдена.");
         assertEquals(task, savedTask, "Задачи не совпадают.");
@@ -120,7 +121,9 @@ class InMemoryTaskManagerTest {
         taskManager.addTask(expected);
 
         Task updatedTask = new Task(expected.getId(), "новое имя", "новое описание", Status.DONE);
-        Task actual = taskManager.updateTask(updatedTask);
+        taskManager.updateTask(updatedTask);
+
+        Task actual = taskManager.getTaskByID(1);
 
         assertEquals(expected.getId(), actual.getId(), "Вернулась задачи с другим id");
 
@@ -171,7 +174,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     void checkHistoryManagerSavesTaskVersions() {
-        TaskManager manager = Managers.getDefault(Managers.getDefaultHistory());
+        TaskManager manager = Managers.getDefault();
         Task checkTask = new Task("Задача 1", "Первая задача", Status.NEW);
         manager.addTask(checkTask);
         manager.getTaskByID(checkTask.getId());
