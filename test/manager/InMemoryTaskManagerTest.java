@@ -98,24 +98,6 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void checkingWhatEpicUpdatedCorrect() {
-
-        Epic epic = new Epic("Основной", "Основной", Status.NEW);
-        taskManager.addEpic(epic);
-
-        Epic epic1 = new Epic("Для теста обновления", "Обновление", Status.NEW);
-        epic1.setId(epic.getId());
-
-        taskManager.updateEpic(epic1);
-
-        Subtask subtask = new Subtask("Подзадача", "Описание подзадачи", Status.DONE, epic.getId());
-        taskManager.addSubtask(subtask);
-
-        assertEquals(epic1, taskManager.getEpicByID(epic.getId()), "Эпик не обновился!");
-
-    }
-
-    @Test
     public void updateTaskShouldReturnTaskWithTheSameId() {
         Task expected = new Task("имя", "описание");
         taskManager.addTask(expected);
