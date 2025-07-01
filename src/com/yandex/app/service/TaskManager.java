@@ -10,17 +10,17 @@ import java.util.List;
 public interface TaskManager {
     int getNextID();
 
-    Task addTask(Task task);
+    void addTask(Task task);
 
-    Epic addEpic(Epic epic);
+    void addEpic(Epic epic);
 
-    Subtask addSubtask(Subtask subtask);
+    void addSubtask(Subtask subtask);
 
-    Task updateTask(Task task);
+    void updateTask(Task task);
 
-    Epic updateEpic(Epic epic);
+    void updateEpic(Epic epic);
 
-    Subtask updateSubtask(Subtask subtask);
+    void updateSubtask(Subtask subtask);
 
     // методы получения по id
     Task getTaskByID(int id);

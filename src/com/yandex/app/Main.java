@@ -1,47 +1,58 @@
 package com.yandex.app;
 
 import com.yandex.app.model.Epic;
+import com.yandex.app.model.Status;
+import com.yandex.app.model.Subtask;
 import com.yandex.app.model.Task;
+import com.yandex.app.service.FileBackedTaskManager;
 import com.yandex.app.service.TaskManager;
 import com.yandex.app.utils.Managers;
 
+import java.io.File;
+
 public class Main {
 
-    private static final TaskManager inMemoryTaskManager = Managers.getDefault(Managers.getDefaultHistory());
+    private static final TaskManager inMemoryTaskManager = Managers.getDefault();
 
     public static void main(String[] args) {
 
-        Epic test = new Epic("Проверить что-то еще", "какое-то описание");
-        inMemoryTaskManager.addEpic(test);
-        System.out.println(test);
-        Epic test2 = new Epic("Задача", "какое-то описание");
-        inMemoryTaskManager.addEpic(test2);
+        File file = new File("tasks.csv");
+        TaskManager manager = new FileBackedTaskManager(file);
 
-        inMemoryTaskManager.getEpicByID(1);
-        inMemoryTaskManager.getEpicByID(2);
+        // Добавляем задачи
+        Task task1 = new Task("Задача 1", "Описание 1", Status.NEW);
+        manager.addTask(task1);
 
-        System.out.println("История просмотров:");
-        for (Task task : Main.inMemoryTaskManager.getHistory()) {
+        Task task2 = new Task("Задача 2", "Описание 2", Status.NEW);
+        manager.addTask(task2);
+
+        Epic epic1 = new Epic("Эпик 1", "Описание эпика 1", Status.NEW);
+        manager.addEpic(epic1);
+
+        Epic epic2 = new Epic("Эпик 2", "Описание эпика 2", Status.NEW);
+        manager.addEpic(epic2);
+
+        Subtask subtask1 = new Subtask("Подзадача 1", "Описание подзадачи", Status.NEW, epic1.getId());
+        manager.addSubtask(subtask1);
+
+        // Все изменения будут сохранены в файл
+
+        // Проверим загрузку из файла
+        TaskManager loadedManager = FileBackedTaskManager.loadFromFile(file);
+
+        System.out.println("Все задачи после загрузки:");
+        for (Task task : loadedManager.getTasks()) {
             System.out.println(task);
         }
 
-        //проверка работы удалений
-        Epic newT = new Epic("2", "какое-то описание");
-        inMemoryTaskManager.addEpic(newT);
-        System.out.println(" ");
-        System.out.println(inMemoryTaskManager.getEpicByID(3));
+        System.out.println("Все эпики после загрузки:");
+        for (Epic epic : loadedManager.getEpics()) {
+            System.out.println(epic);
+        }
 
-        inMemoryTaskManager.deleteEpicById(3);
-        System.out.println(inMemoryTaskManager.getEpicByID(3));
-
-        System.out.println(" ");
-        Task newtask = new Task("Task", "new task");
-        inMemoryTaskManager.addTask(newtask);
-        System.out.println(inMemoryTaskManager.getTasks());
-        inMemoryTaskManager.deleteTasks();
-        System.out.println(inMemoryTaskManager.getTasks());
-        System.out.println(" ");
-
-
+        System.out.println("Все сабтаски после загрузки:");
+        for (Subtask subtask : loadedManager.getSubtasks()) {
+            System.out.println(subtask);
+        }
     }
 }
