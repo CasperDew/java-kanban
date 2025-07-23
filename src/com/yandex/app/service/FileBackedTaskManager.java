@@ -8,10 +8,14 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File saveFile;
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     public FileBackedTaskManager(File saveFile) {
         super();
@@ -49,10 +53,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                         case SUBTASK:
                             Subtask subtask = (Subtask) task;
                             manager.subtaskMap.put(subtask.getId(), subtask);
-
+                            // Подзадача добавляется в эпик
                             Epic parentEpic = manager.epicMap.get(subtask.getEpicID());
                             if (parentEpic != null) {
-                                parentEpic.addSubtask(subtask);
+                                parentEpic.addSubtask(subtask.getId());
                             }
                             break;
                     }
@@ -60,7 +64,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
 
             for (Epic epic : manager.epicMap.values()) {
-                manager.updateEpicStatus(epic);
+                manager.updateEpicStatus(epic.getId());
             }
 
         } catch (IOException e) {
@@ -83,26 +87,37 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             Status status = Status.valueOf(parts[3]);
             String description = parts[4];
 
+            Task task = null;
+
             switch (type) {
                 case TASK:
-                    Task task = new Task(name, description, status);
-                    task.setId(id);
-                    return task;
+                    task = new Task(name, description, status);
+                    break;
                 case EPIC:
-                    Epic epic = new Epic(name, description, status);
-                    epic.setId(id);
-                    return epic;
+                    task = new Epic(name, description, status);
+                    break;
                 case SUBTASK:
                     if (parts.length < 6) {
                         return null;
                     }
                     int epicId = Integer.parseInt(parts[5]);
-                    Subtask subtask = new Subtask(name, description, status, epicId);
-                    subtask.setId(id);
-                    return subtask;
-                default:
-                    return null;
+                    task = new Subtask(name, description, status, epicId);
+                    break;
             }
+
+            if (task != null) {
+                task.setId(id);
+
+                if (parts.length > 6 && !parts[6].equals("null")) {
+                    task.setDuration(Duration.ofMinutes(Long.parseLong(parts[6])));
+                }
+
+                if (parts.length > 7 && !parts[7].equals("null")) {
+                    task.setStartTime(LocalDateTime.parse(parts[7], formatter));
+                }
+            }
+
+            return task;
 
         } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
             return null;
@@ -183,7 +198,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFile))) {
-            writer.write("id,type,name,status,description,epic\n");
+            writer.write("id,type,name,status,description,epic,startTime,duration\n");
 
             for (Task task : getTasks()) {
                 writer.write(toString(task));
@@ -216,6 +231,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         if (task.getType() == Type.SUBTASK) {
             builder.append(",").append(((Subtask) task).getEpicID());
         }
+
+        builder.append(",").append(task.getStartTime() != null ? task.getStartTime().format(formatter) : "null");
+        builder.append(",").append(task.getDuration() != null ? task.getDuration().toMinutes() : "null");
+
 
         return builder.toString();
     }
