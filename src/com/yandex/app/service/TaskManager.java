@@ -4,7 +4,6 @@ import com.yandex.app.model.Epic;
 import com.yandex.app.model.Subtask;
 import com.yandex.app.model.Task;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -33,13 +32,13 @@ public interface TaskManager {
     //получение подзадачи Эпик метода по id эпика
     List<Subtask> getEpicSubtaskByID(int epicID);
 
-    ArrayList<Task> getTasks();
+    List<Task> getTasks();
 
-    ArrayList<Epic> getEpics();
+    List<Epic> getEpics();
 
-    ArrayList<Subtask> getSubtasks();
+    List<Subtask> getSubtasks();
 
-    ArrayList<Task> getHistory();
+    List<Task> getHistory();
 
     //Получение списка задач, отсортированных по startTime
     Set<Task> getPrioritizedTasks();

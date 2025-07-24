@@ -3,9 +3,10 @@ package com.yandex.app.model;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Epic extends Task {
-    private ArrayList<Integer> subtaskList = new ArrayList<>();
+    private List<Integer> subtaskList = new ArrayList<>();
     private LocalDateTime endTime;
 
     public Epic(String name, String description) {
@@ -37,7 +38,7 @@ public class Epic extends Task {
         subtaskList.remove(idSubtask);
     }
 
-    public ArrayList<Integer> getSubtaskList() {
+    public List<Integer> getSubtaskList() {
         return new ArrayList<>(subtaskList);
     }
 

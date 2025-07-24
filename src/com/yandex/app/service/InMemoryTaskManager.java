@@ -158,22 +158,22 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public ArrayList<Task> getTasks() {
+    public List<Task> getTasks() {
         return new ArrayList<>(taskMap.values());
     }
 
     @Override
-    public ArrayList<Epic> getEpics() {
+    public List<Epic> getEpics() {
         return new ArrayList<>(epicMap.values());
     }
 
     @Override
-    public ArrayList<Subtask> getSubtasks() {
+    public List<Subtask> getSubtasks() {
         return new ArrayList<>(subtaskMap.values());
     }
 
     @Override
-    public ArrayList<Task> getHistory() {
+    public List<Task> getHistory() {
         return new ArrayList<>(historyManager.getHistory());
     }
 
@@ -271,8 +271,8 @@ public class InMemoryTaskManager implements TaskManager {
 
     public void updateEpicStatus(int epicId) {
         Epic epic = epicMap.get(epicId);
-        ArrayList<Integer> iDSubtaskArray = epic.getSubtaskList();
-        ArrayList<Subtask> subtasksArray = new ArrayList<>();
+        List<Integer> iDSubtaskArray = epic.getSubtaskList();
+        List<Subtask> subtasksArray = new ArrayList<>();
         for (Integer id : iDSubtaskArray) {
             subtasksArray.add(subtaskMap.get(id));
         }
