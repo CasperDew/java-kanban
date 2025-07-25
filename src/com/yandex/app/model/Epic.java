@@ -1,9 +1,13 @@
 package com.yandex.app.model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Epic extends Task {
-    private ArrayList<Subtask> subtaskList = new ArrayList<>();
+    private List<Integer> subtaskList = new ArrayList<>();
+    private LocalDateTime endTime;
 
     public Epic(String name, String description) {
         super(name, description);
@@ -22,7 +26,7 @@ public class Epic extends Task {
 
     }
 
-    public void addSubtask(Subtask subtask) {
+    public void addSubtask(int subtask) {
         subtaskList.add(subtask);
     }
 
@@ -30,12 +34,48 @@ public class Epic extends Task {
         subtaskList.clear();
     }
 
-    public ArrayList<Subtask> getSubtaskList() {
+    public void deleteEpicSubtask(Integer idSubtask) {
+        subtaskList.remove(idSubtask);
+    }
+
+    public List<Integer> getSubtaskList() {
         return new ArrayList<>(subtaskList);
     }
 
-    public void setSubtaskList(ArrayList<Subtask> subtaskList) {
+    public void setSubtaskList(ArrayList<Integer> subtaskList) {
         this.subtaskList = subtaskList;
+    }
+
+    /*
+        Расчет времени происходит на основе подзадач
+     */
+    @Override
+    public LocalDateTime getStartTime() {
+        return null;
+    }
+
+    @Override
+    public void setStartTime(LocalDateTime startTime) {
+
+    }
+
+    @Override
+    public Duration getDuration() {
+        return null;
+    }
+
+    @Override
+    public void setDuration(Duration duration) {
+
+    }
+
+    @Override
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     @Override

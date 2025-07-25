@@ -4,8 +4,8 @@ import com.yandex.app.model.Epic;
 import com.yandex.app.model.Subtask;
 import com.yandex.app.model.Task;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public interface TaskManager {
     int getNextID();
@@ -32,13 +32,16 @@ public interface TaskManager {
     //получение подзадачи Эпик метода по id эпика
     List<Subtask> getEpicSubtaskByID(int epicID);
 
-    ArrayList<Task> getTasks();
+    List<Task> getTasks();
 
-    ArrayList<Epic> getEpics();
+    List<Epic> getEpics();
 
-    ArrayList<Subtask> getSubtasks();
+    List<Subtask> getSubtasks();
 
-    ArrayList<Task> getHistory();
+    List<Task> getHistory();
+
+    //Получение списка задач, отсортированных по startTime
+    Set<Task> getPrioritizedTasks();
 
     //очистка задач
     void deleteTasks();
@@ -52,5 +55,11 @@ public interface TaskManager {
     void deleteEpicById(int id);
 
     void deleteSubtaskByID(int id);
+
+    //проверка на пересечение задач по времени
+    boolean isTaskIntersect(Task task1, Task task2);
+
+    //проверка на пересечение задач с другими задачами в менеджере
+    boolean isTaskIntersectWithAny(Task task1);
 
 }
