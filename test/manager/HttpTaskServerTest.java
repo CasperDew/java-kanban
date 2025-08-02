@@ -82,7 +82,7 @@ public class HttpTaskServerTest {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(200, response.statusCode());
+        assertEquals(201, response.statusCode());
 
         assertEquals(1, manager.getEpics().size(), "Некорректное количество задач");
         assertEquals("Эпик 1", manager.getEpics().get(0).getName(), "Имя эпика не совпало");
@@ -107,7 +107,7 @@ public class HttpTaskServerTest {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(200, response.statusCode());
+        assertEquals(201, response.statusCode());
 
         assertEquals(1, manager.getSubtasks().size(), "Некорректное количество задач");
         assertEquals("Подзадача 1", manager.getSubtasks().get(0).getName(), "Имя эпика не совпало");

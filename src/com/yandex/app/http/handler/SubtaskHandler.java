@@ -89,12 +89,12 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
         if (subtask.getId() == 0) {
             taskManager.addSubtask(subtask);
             String response = gson.toJson(subtask);
-            sendText(exchange, response);
+            sendCreated(exchange, response);
 
         } else {
             taskManager.updateSubtask(subtask);
             String response = gson.toJson(subtask);
-            sendText(exchange, response);
+            sendCreated(exchange, response);
         }
     }
 

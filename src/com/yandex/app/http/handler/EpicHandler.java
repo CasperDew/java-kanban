@@ -111,7 +111,7 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
 
         taskManager.addEpic(epic);
         String response = gson.toJson(epic);
-        sendText(exchange, response);
+        sendCreated(exchange, response);
     }
 
     private void handleDelete(HttpExchange exchange, String path) throws IOException {
